@@ -1,0 +1,421 @@
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:storeregisterapp/addnewproducts.dart';
+import 'package:storeregisterapp/dashboard.dart';
+import 'package:storeregisterapp/forgotpassword.dart';
+import 'package:storeregisterapp/service/http_service.dart';
+import 'package:storeregisterapp/signup.dart';
+
+import 'package:url_launcher/url_launcher.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
+
+void main() {
+  runApp( MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Home(),
+    );
+  }
+}
+
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final formKey = GlobalKey<FormState>();
+  String emailpattern =
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+
+  TextEditingController usermailid = TextEditingController();
+  TextEditingController userpassword = TextEditingController();
+  bool showSpinner = false;
+  SharedPreferences ?logindata;
+  bool ?newuser;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    
+    check_if_already_login();
+  }
+   void check_if_already_login() async{
+    logindata= await SharedPreferences.getInstance();
+    newuser=(logindata!.getBool('login')?? true);
+    print(newuser);
+
+    if(newuser==false)
+    {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+      dashboard()
+      ));
+    }
+
+   }
+
+  
+
+  @override
+  Widget build(BuildContext context) {
+    //  final double height = MediaQuery.of(context).size.height;
+     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+    return ModalProgressHUD(
+      inAsyncCall: showSpinner,
+      child: Scaffold(
+       key: _scaffoldKey,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(90.0),
+          child: AppBar(
+            title: Text("Join with us ,Integrate your business Online", style: TextStyle(color: Colors.white),),
+            flexibleSpace: Image(
+            image: AssetImage('lib/images/image2.jpeg'),
+            fit: BoxFit.cover,),
+            centerTitle: true,
+            
+          ),
+        ),
+        backgroundColor: Color(0xFFffffff),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          reverse: true,
+          child: Container(
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              image: DecorationImage(image: AssetImage("lib/images/loginimage.jpeg"),fit: BoxFit.cover),
+            ),
+            padding: EdgeInsets.only(left: 20, right: 20), 
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: Container(
+                    child: Text(
+                      "WELCOME TO ",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Container(
+                    child: Text(
+                      "NEW STORE REGISTRATION !!",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      Text(
+                        "",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromARGB(255, 232, 35, 62),
+                          fontStyle: FontStyle.italic,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Center(
+                  child: Container(
+                    padding:
+                        EdgeInsets.only(left: 50, right: 50, top: 10, bottom: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all( color: Colors.white,width: 2),
+                      borderRadius: BorderRadius.circular(5.0),
+                    
+                    ),
+                    child: SizedBox(
+                      width: 300,
+                      child: Form(
+                             key: formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Center(
+                                child: Text(
+                              "Sign In",
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            SizedBox(
+                              width: 300,
+                              child: TextFormField(
+                                controller: usermailid,
+                                style: TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                    labelText: "Enter Mail ID",
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(Icons.mail_lock,color: Colors.white,),
+                                    border: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.black, width: 1.0))),
+                                validator: (lmailid) {
+                                  if (lmailid!.isEmpty ||
+                                      lmailid == null ||
+                                      !RegExp(r'').hasMatch(lmailid)) {
+                                    return "Please Enter  valid mail ID";
+                                  } else {
+                                    print("Mail\t" '$lmailid');
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            SizedBox(
+                              width: 300,
+                              child: TextFormField(
+                                controller: userpassword,
+                                obscureText: true,
+                                style: TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                
+                                    labelText: "Enter Your Password ",
+                                      labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(Icons.password_rounded ,color: Colors.white,),
+                                    border: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.black, width: 1.0))),
+                                validator: (lpassword) {
+                                  if (lpassword!.isEmpty) {
+                                    return "Enter Password";
+                                  } else {
+                                    print("Password\t" '$lpassword');
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Center(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.lightBlue,
+                                    onPrimary: Colors.white,
+                                    minimumSize: Size(300, 50),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        side: BorderSide(color: Colors.white70)),
+                                  ),
+                                  onPressed: () async{
+                                   
+                                     if (formKey.currentState!.validate()) {
+                                     await 
+                                      loginUser(usermailid.text, userpassword.text);
+                                         
+                                
+                                        if (mess() == "Login Successful") {
+                                                
+                                                //print(getstoreid());
+                                          logindata!.setBool('login',false);
+                                         logindata!.setString("usermail", usermailid.text);
+                                         logindata!.setString("userpassword", userpassword.text);
+                                         logindata!.setString("store_id",getstoreid().toString());
+                                        // logindata!.setString("store_id", value)
+
+                                          
+                                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => dashboard(),), (route) => false);
+                                      //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>dashboard( uname: mailid.text,umailid: password.text,)));
+                                          
+                                      showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SimpleDialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0)),
+                                                ),
+                                                title: Text(mess()),
+                                                backgroundColor: Colors.white,
+                                                contentPadding:
+                                                    EdgeInsets.all(40.0),
+                                              );
+                                            },
+                                          );
+                                        } 
+                                        else{ 
+                                           showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return SimpleDialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(10.0)),
+                                                ),
+                                                title: Text(mess()),
+                                                backgroundColor: Colors.white,
+                                                contentPadding:
+                                                    EdgeInsets.all(40.0),
+                                              );
+                                            },
+                                          );
+                                       
+                                          
+    
+                                        }
+                                     
+                                     }
+                                      
+                                  },
+                                  child: Text(
+                                    "Sign In",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Don't have an account? ",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white
+                                  ),
+                                ),
+                                new GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => signup()));
+                                  },
+                                  child: new Text(
+                                    "CreateAccount",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Center(
+                              child: Container(
+                                child: new GestureDetector(
+                                  onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  forgotpassword()));
+                              
+                                  },
+                                  child: new Text(
+                                    "Forgot your password",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Center(child: Text("Follow Us")),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                    IconButton(onPressed: (){ _launchurl();}, icon: Icon(Icons.facebook)),
+                     IconButton(onPressed: (){ _launchurl();}, icon: Icon(Icons.apple)),
+                    
+                      
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+_launchurl() async
+{
+const url = 'https://www.linkedin.com/in/abhishek-y-88615b216/?originalSubdomain=in';
+  // ignore: deprecated_member_use
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+
+}
