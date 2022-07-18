@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storeregisterapp/addnewproducts.dart';
+import 'package:storeregisterapp/edit.dart';
 import 'package:storeregisterapp/main.dart';
-import 'package:storeregisterapp/removeproducts.dart';
+import 'package:storeregisterapp/product_list_by_store_id.dart';
+
+
 
 //import 'package:storekeeperapp/addnewproducts.dart';
 //import 'package:storekeeperapp/main.dart';
@@ -10,19 +13,15 @@ import 'package:storeregisterapp/removeproducts.dart';
 //import 'package:storekeeperapp/removeproducts.dart';
 
 class dashboard extends StatefulWidget {
-  
-
-   dashboard({Key? key}) : super(key: key);
+  dashboard({Key? key}) : super(key: key);
 
 
   @override
-  State<dashboard> createState() => _dashboardState();
+  _dashboardState createState() => _dashboardState();
 }
 
 class _dashboardState extends State<dashboard> {
   
-_dashboardState( {Key? key });
-
   SharedPreferences ?logindata;
   String ?usermail;
   String ?userpassword;
@@ -40,6 +39,7 @@ _dashboardState( {Key? key });
       userpassword=logindata!.getString('userpassword');
       storeidl=logindata!.getString("store_id");
       print(storeidl);
+      //productbystore(storeidl);
     });
   }
  
@@ -55,7 +55,7 @@ _dashboardState( {Key? key });
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.indigoAccent.shade100,
+        backgroundColor: Colors.white,
         appBar: AppBar(
             centerTitle: true,
             title: const Text(
@@ -64,8 +64,8 @@ _dashboardState( {Key? key });
                 color: Colors.black,
               ),
             ),
-            shadowColor: Color.fromARGB(255, 95, 94, 94),
-            backgroundColor: Colors.indigoAccent.shade200),
+            
+            ),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.all(0.0),
@@ -77,10 +77,10 @@ _dashboardState( {Key? key });
               UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.blue),
                 accountName: Text(usermail.toString()),
-                accountEmail: Text(userpassword.toString()),
+                accountEmail: Text(""),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.pink.shade50,
-                  child: Text("Abhi"),
+                  child: Text(usermail.toString().substring(0,4)),
                 ),
               ),
               ListTile(
@@ -102,7 +102,25 @@ _dashboardState( {Key? key });
                 title: const Text("Log Out"),
                 onTap: () {
                  logindata!.setBool('login', true);
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+                 showDialog(context: context, builder:(BuildContext context){
+                                       return  AlertDialog
+                                       (
+                                        title: Text("Logut"),
+                                        content: Text("Are you Sure You want to logout ???"),
+                                        
+                                        actions: 
+                                        [
+                                          TextButton(onPressed: ()
+                                          {
+Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));} , child:Text("Yes")),
+                                          TextButton(onPressed: (){
+                                            Navigator.pop(context);
+                                          } , child:Text("No")),
+                                        ],
+                                       );
+                                       });
+
+                  
                 },
               )
             ],
@@ -112,7 +130,10 @@ _dashboardState( {Key? key });
             child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           width: double.infinity,
-          child: Column(children: [
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
             /*   ElevatedButton.icon(
           onPressed: () async
           {
@@ -127,8 +148,12 @@ _dashboardState( {Key? key });
             textStyle: TextStyle(fontSize: 15),
           ),
         ),*/
-            Removeproducts(context),
+           // Removeproducts(context),
+           SizedBox(height: 60,),
             Addnewproducts(context),
+           
+            viewproducts(context),
+        
            
           ]),
         )),
@@ -137,30 +162,32 @@ _dashboardState( {Key? key });
   }
 
   Widget Addnewproducts(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(50),
+    return Center(
+                
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           minimumSize: Size(300, 60),
           textStyle: TextStyle(fontSize: 15),
-          primary: Color.fromARGB(225, 255, 252, 100),
-          onPrimary: Colors.black,
-          shape: RoundedRectangleBorder(
+         
+            primary: Colors.lightBlue,
+                                    onPrimary: Colors.white,
+                                       shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15.0),
                                       side: BorderSide(color: Colors.white70))
+          
         ),
         child: const Text("Add New Products"),
         onPressed: () {
           print(storeidl.toString());
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) =>MyImagePicker()));
+              .push(MaterialPageRoute(builder: (context) =>addnewprod(userstoreid: storeidl.toString(),email_user: usermail.toString(),pass_word: userpassword.toString(),)));
         },
       ),
     );
   }
 
-  Widget Removeproducts(BuildContext context) {
+
+   Widget viewproducts(BuildContext context) {
     return Container(
       alignment: Alignment.center,
       padding: const EdgeInsets.all(50),
@@ -168,19 +195,16 @@ _dashboardState( {Key? key });
         style: ElevatedButton.styleFrom(
           minimumSize: Size(300, 60),
           textStyle: TextStyle(fontSize: 15),
-          primary:Color.fromARGB(225, 255, 252, 100),
-          onPrimary: Colors.black,
+          primary: Colors.lightBlue,
+                                    onPrimary: Colors.white,
+                                    
           shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15.0),
                                       side: BorderSide(color: Colors.white70))
         ),
-        child: const Text("Remove Products"),
+        child: const Text("view products"),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => removeproducts(
-                    usename: 'user_mail.toString()',
-                    usermailid: 'user_password.toString()',
-                  )));
+          Navigator.of(context).push(MaterialPageRoute(builder: ((context) => CardPage(storeid:storeidl.toString())) ));
         },
       ),
     );

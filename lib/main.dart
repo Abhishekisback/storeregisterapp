@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storeregisterapp/addnewproducts.dart';
@@ -9,9 +11,8 @@ import 'package:storeregisterapp/signup.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-
 void main() {
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -41,50 +42,48 @@ class _HomeState extends State<Home> {
   TextEditingController usermailid = TextEditingController();
   TextEditingController userpassword = TextEditingController();
   bool showSpinner = false;
-  SharedPreferences ?logindata;
-  bool ?newuser;
-
+  SharedPreferences? logindata;
+  bool? newuser;
 
   @override
   void initState() {
     // TODO: implement initState
-    
+                 
     check_if_already_login();
   }
-   void check_if_already_login() async{
-    logindata= await SharedPreferences.getInstance();
-    newuser=(logindata!.getBool('login')?? true);
+
+  void check_if_already_login() async {
+    logindata = await SharedPreferences.getInstance();
+    newuser = (logindata!.getBool('login') ?? true);
     print(newuser);
 
-    if(newuser==false)
-    {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
-      dashboard()
-      ));
+    if (newuser == false) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => dashboard()));
     }
-
-   }
-
-  
+  }
 
   @override
   Widget build(BuildContext context) {
     //  final double height = MediaQuery.of(context).size.height;
-     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
-       key: _scaffoldKey,
+        key: _scaffoldKey,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(90.0),
           child: AppBar(
-            title: Text("Join with us ,Integrate your business Online", style: TextStyle(color: Colors.white),),
+            title: Text(
+              "Join with us ,Integrate your business Online",
+              style: TextStyle(color: Colors.white),
+            ),
             flexibleSpace: Image(
-            image: AssetImage('lib/images/image2.jpeg'),
-            fit: BoxFit.cover,),
+              image: AssetImage('lib/images/image2.jpeg'),
+              fit: BoxFit.cover,
+            ),
             centerTitle: true,
-            
           ),
         ),
         backgroundColor: Color(0xFFffffff),
@@ -94,9 +93,11 @@ class _HomeState extends State<Home> {
           child: Container(
             alignment: Alignment.center,
             decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage("lib/images/loginimage.jpeg"),fit: BoxFit.cover),
+              image: DecorationImage(
+                  image: AssetImage("lib/images/loginimage.jpeg"),
+                  fit: BoxFit.cover),
             ),
-            padding: EdgeInsets.only(left: 20, right: 20), 
+            padding: EdgeInsets.only(left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -159,17 +160,16 @@ class _HomeState extends State<Home> {
                 ),
                 Center(
                   child: Container(
-                    padding:
-                        EdgeInsets.only(left: 50, right: 50, top: 10, bottom: 10),
+                    padding: EdgeInsets.only(
+                        left: 50, right: 50, top: 10, bottom: 10),
                     decoration: BoxDecoration(
-                      border: Border.all( color: Colors.white,width: 2),
+                      border: Border.all(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(5.0),
-                    
                     ),
                     child: SizedBox(
                       width: 300,
                       child: Form(
-                             key: formKey,
+                        key: formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -194,10 +194,13 @@ class _HomeState extends State<Home> {
                                 controller: usermailid,
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
-                                  fillColor: Colors.white,
+                                    fillColor: Colors.white,
                                     labelText: "Enter Mail ID",
                                     labelStyle: TextStyle(color: Colors.white),
-                                    prefixIcon: Icon(Icons.mail_lock,color: Colors.white,),
+                                    prefixIcon: Icon(
+                                      Icons.mail_lock,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -223,10 +226,12 @@ class _HomeState extends State<Home> {
                                 obscureText: true,
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
-                                
                                     labelText: "Enter Your Password ",
-                                      labelStyle: TextStyle(color: Colors.white),
-                                    prefixIcon: Icon(Icons.password_rounded ,color: Colors.white,),
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(
+                                      Icons.password_rounded,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -253,68 +258,72 @@ class _HomeState extends State<Home> {
                                     onPrimary: Colors.white,
                                     minimumSize: Size(300, 50),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15.0),
-                                        side: BorderSide(color: Colors.white70)),
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                        side:
+                                            BorderSide(color: Colors.white70)),
                                   ),
-                                  onPressed: () async{
-                                   
-                                     if (formKey.currentState!.validate()) {
-                                     await 
-                                      loginUser(usermailid.text, userpassword.text);
-                                         
-                                
-                                        if (mess() == "Login Successful") {
-                                                
-                                                //print(getstoreid());
-                                          logindata!.setBool('login',false);
-                                         logindata!.setString("usermail", usermailid.text);
-                                         logindata!.setString("userpassword", userpassword.text);
-                                         logindata!.setString("store_id",getstoreid().toString());
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      await loginUser(
+                                          usermailid.text, userpassword.text);
+                                      // print(logresponseBody);
+                                      print(json.decode(logresponseBody));
+                                      if (json.decode(
+                                              logresponseBody)["message"] ==
+                                          "Login Successful") {
+                                        //print(getstoreid());
+                                        logindata!.setBool('login', false);
+                                        logindata!.setString(
+                                            "usermail", usermailid.text);
+                                        logindata!.setString(
+                                            "userpassword", userpassword.text);
+                                        logindata!.setString(
+                                            "store_id",
+                                            json
+                                                .decode(logresponseBody)[
+                                                    "store_user"]["store_id"]
+                                                .toString());
                                         // logindata!.setString("store_id", value)
 
-                                          
-                                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => dashboard(),), (route) => false);
-                                      //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>dashboard( uname: mailid.text,umailid: password.text,)));
-                                          
-                                      showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return SimpleDialog(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10.0)),
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      dashboard(),
                                                 ),
-                                                title: Text(mess()),
-                                                backgroundColor: Colors.white,
-                                                contentPadding:
-                                                    EdgeInsets.all(40.0),
-                                              );
-                                            },
-                                          );
-                                        } 
-                                        else{ 
-                                           showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return SimpleDialog(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10.0)),
-                                                ),
-                                                title: Text(mess()),
-                                                backgroundColor: Colors.white,
-                                                contentPadding:
-                                                    EdgeInsets.all(40.0),
-                                              );
-                                            },
-                                          );
-                                       
-                                          
-    
-                                        }
-                                     
-                                     }
-                                      
+                                                (route) => false);
+                                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>dashboard( uname: mailid.text,umailid: password.text,)));
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Welcome "),
+                                              content: Text(
+                                                json
+                                                    .decode(logresponseBody)[
+                                                        "store_user"]["email"]
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(json.decode(
+                                                  logresponseBody)["message"]),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    }
                                   },
                                   child: Text(
                                     "Sign In",
@@ -332,14 +341,13 @@ class _HomeState extends State<Home> {
                                 Text(
                                   "Don't have an account? ",
                                   style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.white
-                                  ),
+                                      fontSize: 15, color: Colors.white),
                                 ),
                                 new GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => signup()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => signup()));
                                   },
                                   child: new Text(
                                     "CreateAccount",
@@ -359,11 +367,10 @@ class _HomeState extends State<Home> {
                               child: Container(
                                 child: new GestureDetector(
                                   onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  forgotpassword()));
-                              
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                forgotpassword()));
                                   },
                                   child: new Text(
                                     "Forgot your password",
@@ -390,10 +397,16 @@ class _HomeState extends State<Home> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                    IconButton(onPressed: (){ _launchurl();}, icon: Icon(Icons.facebook)),
-                     IconButton(onPressed: (){ _launchurl();}, icon: Icon(Icons.apple)),
-                    
-                      
+                      IconButton(
+                          onPressed: () {
+                            _launchurl();
+                          },
+                          icon: Icon(Icons.facebook)),
+                      IconButton(
+                          onPressed: () {
+                            _launchurl();
+                          },
+                          icon: Icon(Icons.apple)),
                     ],
                   ),
                 ),
@@ -408,14 +421,14 @@ class _HomeState extends State<Home> {
     );
   }
 }
-_launchurl() async
-{
-const url = 'https://www.linkedin.com/in/abhishek-y-88615b216/?originalSubdomain=in';
+
+_launchurl() async {
+  const url =
+      'https://www.linkedin.com/in/abhishek-y-88615b216/?originalSubdomain=in';
   // ignore: deprecated_member_use
   if (await canLaunch(url)) {
     await launch(url);
   } else {
     throw 'Could not launch $url';
   }
-
 }

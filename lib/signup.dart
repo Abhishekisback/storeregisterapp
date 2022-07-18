@@ -1,7 +1,13 @@
+
+// ignore_for_file: deprecated_member_use
+
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:storeregisterapp/main.dart';
 import 'package:storeregisterapp/service/http_service.dart';
+import 'package:storeregisterapp/test.dart';
 
 class signup extends StatefulWidget {
   const signup({
@@ -106,7 +112,7 @@ class _signupState extends State<signup> {
           child: Container(
             alignment: Alignment.center,
           decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage("lib/images/image2.jpeg"),fit: BoxFit.cover),
+            image: DecorationImage(image: AssetImage("lib/images/loginimage.jpeg"),fit: BoxFit.cover),
           ),
 
 
@@ -292,7 +298,7 @@ class _signupState extends State<signup> {
                               child: TextFormField(
                                 controller: phone,
                                 style: TextStyle(color: Colors.white),
-                                
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                     labelText: "Mobile No ",
                                      labelStyle: TextStyle(color: Colors.white),
@@ -366,7 +372,7 @@ class _signupState extends State<signup> {
                                     primary: Colors.amber.shade300,
                                     onPrimary: Colors.grey.shade600,
                                     elevation: 20,
-                                    minimumSize: Size(100, 50),
+                                    //minimumSize: Size(100, 50),
                                     
                                     shadowColor:
                                         Colors.amber.shade300,
@@ -405,7 +411,7 @@ class _signupState extends State<signup> {
                             SizedBox(
                               height: 15,
                             ),
-                                  Center(child: Container( padding: EdgeInsets.all(10), decoration: BoxDecoration(
+                                  Center(child: Container( padding: EdgeInsets.all(10),  decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(5.0),
                     ), child: Text("longitude : $long", textScaleFactor: 1.2, style: const TextStyle(fontSize:15 ,color: Colors.white),))),
@@ -424,7 +430,7 @@ class _signupState extends State<signup> {
                                     primary: Colors.amber.shade300,
                                     onPrimary: Colors.grey.shade600,
                                     elevation: 20,
-                                    minimumSize: Size(200, 50),
+                                   // minimumSize: Size(200, 50),
                                     shadowColor:
                                         Colors.amber.shade600,
                                         shape: RoundedRectangleBorder(
@@ -434,45 +440,52 @@ class _signupState extends State<signup> {
                                   ),
                                   onPressed: () async {
                                     if (formKey.currentState!.validate()) {
-                                      await registerUserStore(email.text,password.text,name.text,phone.text,store_name.text,storeaddress.text,lat,long);
-                                      print(mess());
-                                       if (mess().toString() =="User Already exists,Please go for login") 
+                                      await registerUserStore(email.text,password.text,name.text,int.parse(phone.text),store_name.text,storeaddress.text,lat,long);
+                                    //  print(mess());
+                                       if (json.decode(responseBody)["message"]=="User Already exists,Please go for login") 
                                       {
-                                            
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SimpleDialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0)),
-                                              ),
-                                              title: Text(mess()),
-                                              backgroundColor: Colors.white,
-                                              contentPadding:
-                                                  EdgeInsets.all(40.0),
-                                            );
-                                          },
-                                        );
+                                      
+                                       showDialog(context: context, builder:(BuildContext context){
+                                       return  AlertDialog
+                                       (
+                                        title: Text("User Already exists,Please go for login"),
+                                        content:  Text("Would You Like To go for login!!!"),
+                                        actions: 
+                                        [
+                                          TextButton(onPressed: ()
+                                          {
+                                            Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => Home()));
+                                          } , child:Text("Yes")),
+                                          TextButton(onPressed: (){} , child:Text("No")),
+                                        ],
+                                       );
+                                       });
                                        
                                        
                                       }
-                                      else {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SimpleDialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0)),
-                                              ),
-                                              title: Text(mess()),
-                                              backgroundColor: Colors.white,
-                                              contentPadding:
-                                                  EdgeInsets.all(40.0),
-                                            );
-                                          },
-                                        );
+                                     else {
+                                           showDialog(context: context, builder:(BuildContext context){
+                                       return AlertDialog
+                                       (
+                                        title: Text(json.decode(responseBody)["message"]),
+                                        
+                                        actions: 
+                                        [
+                                          TextButton(onPressed: (){
+                                            Navigator.pop(context);
+                                          }, child:Text("Ok"))
+                                                  
+                                        ],
+                                       );
+                                       });
+                                       name.clear();
+                                       email.clear();
+                                       password.clear();
+                                       storeaddress.clear();
+                                      store_name.clear();
+                                      phone.clear();
+                                      
 
                                       }
                                       print(email.text);
@@ -484,64 +497,7 @@ class _signupState extends State<signup> {
                                       print(store_name.text);
                                       print(phone.text);
                                     }
-                                    /* if (formKey.currentState!.validate()) {
-                                       await registerStore(
-                                          email.text,
-                                          password.text,
-                                          name.text,
-                                          address.text,
-                                          phone.text,
-                                          store_name.text);
-                                      if (mess().toString() =="User registered Successfully!") 
-                                      {
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Home()),
-                                            (route) => true);
-                                             Navigator.of(context).pop();
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SimpleDialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0)),
-                                              ),
-                                              title: Text(''),
-                                              backgroundColor: Colors.white,
-                                              contentPadding:
-                                                  EdgeInsets.all(40.0),
-                                            );
-                                          },
-                                        );
-                                        print("user registered ");
-                                          Navigator.pop(context);
-                                       
-                                      }
-                                      else { 
-                                              Navigator.of(context).pop();
-
-                                   showDialog(
-                                    
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return SimpleDialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0)),
-                                              ),
-                                              title: Text(''),
-                                              backgroundColor: Colors.white,
-                                              contentPadding:
-                                                  EdgeInsets.all(40.0),
-                                            );
-                                          },
-                                        );
-
-
-                                      }
-                                    }*/
+                                     
                                   },
                                   child: Text(
                                     "SignUp",
