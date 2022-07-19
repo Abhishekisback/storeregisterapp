@@ -44,11 +44,12 @@ class _HomeState extends State<Home> {
   bool showSpinner = false;
   SharedPreferences? logindata;
   bool? newuser;
+  bool? _loading;
 
   @override
   void initState() {
     // TODO: implement initState
-                 
+
     check_if_already_login();
   }
 
@@ -135,25 +136,6 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(
                   height: 10,
-                ),
-                Container(
-                  child: Row(
-                    children: [
-                      Spacer(),
-                      Text(
-                        "",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromARGB(255, 232, 35, 62),
-                          fontStyle: FontStyle.italic,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
                 ),
                 SizedBox(
                   height: 5,
@@ -264,11 +246,23 @@ class _HomeState extends State<Home> {
                                             BorderSide(color: Colors.white70)),
                                   ),
                                   onPressed: () async {
-                                    if (formKey.currentState!.validate()) {
+                                     showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      },
+                                    );
+                                    Future.delayed(Duration(seconds: 1), () async {
+                                      //Navigator.of(context).pop();
+                                     if (formKey.currentState!.validate()) {
+                                      
+
                                       await loginUser(
                                           usermailid.text, userpassword.text);
-                                      // print(logresponseBody);
+
                                       print(json.decode(logresponseBody));
+                                      Navigator.of(context).pop();
                                       if (json.decode(
                                               logresponseBody)["message"] ==
                                           "Login Successful") {
@@ -312,7 +306,8 @@ class _HomeState extends State<Home> {
                                             );
                                           },
                                         );
-                                      } else {
+                                      } 
+                                      else {
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -324,6 +319,10 @@ class _HomeState extends State<Home> {
                                         );
                                       }
                                     }
+                                    });
+
+                                    
+                                    
                                   },
                                   child: Text(
                                     "Sign In",
@@ -345,9 +344,18 @@ class _HomeState extends State<Home> {
                                 ),
                                 new GestureDetector(
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => signup()));
+                                         showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(child: CircularProgressIndicator());
+            },
+          );
+                                    Future.delayed(Duration(seconds: 2), () {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => signup()));
+                                    });
                                   },
                                   child: new Text(
                                     "CreateAccount",
@@ -367,6 +375,7 @@ class _HomeState extends State<Home> {
                               child: Container(
                                 child: new GestureDetector(
                                   onTap: () {
+                                
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>

@@ -34,7 +34,7 @@ class _cardPageState extends State<CardPage> {
         _isLoadingProduct = false;
       });
     });
-    super.initState();
+    //super.initState();
   }
 
   @override
@@ -125,7 +125,7 @@ class _cardPageState extends State<CardPage> {
     ),
 
           Container(
-            height: 760,
+            height: 2000,
             alignment: Alignment.centerLeft,
             child: ListView.builder(
               shrinkWrap: true,
