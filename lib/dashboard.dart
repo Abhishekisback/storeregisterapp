@@ -230,11 +230,11 @@ class _dashboardState extends State<dashboard> {
         onPressed: () {
           _circularloadingbar(context);
           Future.delayed( Duration(milliseconds: 500), () {
-
+   Navigator.of(context).pop();
 // Here you can write your code
  Navigator.of(context).push(MaterialPageRoute(
               builder: ((context) => CardPage(storeid: storeidl.toString()))));
-  
+
 
 });
          

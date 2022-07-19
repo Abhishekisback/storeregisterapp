@@ -317,7 +317,11 @@ class _HomeState extends State<Home> {
                                             );
                                           },
                                         );
+                                       
                                       }
+                                    }
+                                    else{
+                                       Navigator.of(context).pop();
                                     }
                                     });
 

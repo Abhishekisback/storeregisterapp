@@ -1,4 +1,3 @@
-
 // ignore_for_file: deprecated_member_use
 
 import 'dart:convert';
@@ -88,34 +87,45 @@ class _signupState extends State<signup> {
     });
   }
 
+  _circularloadingbar(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
- 
+
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Text( "New Registration",style: TextStyle(color: Colors.blue , fontWeight: FontWeight.bold),),
+          title: Text(
+            "New Registration",
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          ),
           centerTitle: true,
           flexibleSpace: Image(
-          image: AssetImage('lib/images/image2.jpeg'),
-          fit: BoxFit.cover,),
-          
+            image: AssetImage('lib/images/image2.jpeg'),
+            fit: BoxFit.cover,
+          ),
         ),
         body: SingleChildScrollView(
-          
           scrollDirection: Axis.vertical,
           reverse: true,
           child: Container(
             alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage("lib/images/loginimage.jpeg"),fit: BoxFit.cover),
-          ),
-
-
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("lib/images/loginimage.jpeg"),
+                  fit: BoxFit.cover),
+            ),
             padding: EdgeInsets.only(left: 20, right: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,11 +137,10 @@ class _signupState extends State<signup> {
                   child: Text(
                     "WELCOME ",
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold
-                    ),
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(
@@ -141,12 +150,10 @@ class _signupState extends State<signup> {
                   child: Text(
                     "STORE REGISTRATION ",
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold
-
-                    ),
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(
@@ -181,11 +188,10 @@ class _signupState extends State<signup> {
                     child: Text(
                   "PLEASE FILL REQUIIRED DETAILS",
                   style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.white,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold
-                  ),
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold),
                 )),
                 SizedBox(
                   height: 20,
@@ -195,7 +201,7 @@ class _signupState extends State<signup> {
                     padding: EdgeInsets.only(
                         left: 50, right: 50, top: 10, bottom: 10),
                     decoration: BoxDecoration(
-                      border: Border.all( color: Colors.white,width: 2),
+                      border: Border.all(color: Colors.white, width: 2),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     child: SizedBox(
@@ -212,10 +218,9 @@ class _signupState extends State<signup> {
                               child: Text(
                                 "Sign Up",
                                 style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ),
                             SizedBox(
@@ -228,9 +233,11 @@ class _signupState extends State<signup> {
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     labelText: "Enter Full Name",
-                                     labelStyle: TextStyle(color: Colors.white),
+                                    labelStyle: TextStyle(color: Colors.white),
                                     prefixIcon: Icon(
-                                        Icons.supervised_user_circle_outlined,color: Colors.white,),
+                                      Icons.supervised_user_circle_outlined,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -252,8 +259,11 @@ class _signupState extends State<signup> {
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     labelText: "Enter Your E-mail Id ",
-                                     labelStyle: TextStyle(color: Colors.white),
-                                    prefixIcon: Icon(Icons.email_outlined, color: Colors.white,),
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(
+                                      Icons.email_outlined,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -272,12 +282,14 @@ class _signupState extends State<signup> {
                               width: 300,
                               child: TextFormField(
                                 controller: password,
-                                
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     labelText: "Create Your Password ",
-                                     labelStyle: TextStyle(color: Colors.white),
-                                    prefixIcon: Icon(Icons.lock,color: Colors.white,),
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(
+                                      Icons.lock,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -292,7 +304,6 @@ class _signupState extends State<signup> {
                             SizedBox(
                               height: 20,
                             ),
-                            
                             SizedBox(
                               width: 300,
                               child: TextFormField(
@@ -301,8 +312,11 @@ class _signupState extends State<signup> {
                                 keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                     labelText: "Mobile No ",
-                                     labelStyle: TextStyle(color: Colors.white),
-                                    prefixIcon: Icon(Icons.phone_android , color: Colors.white,),
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(
+                                      Icons.phone_android,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -314,7 +328,6 @@ class _signupState extends State<signup> {
                                 },
                               ),
                             ),
-                           
                             SizedBox(
                               height: 20,
                             ),
@@ -325,9 +338,11 @@ class _signupState extends State<signup> {
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     labelText: " Enter the store Name",
-                                     labelStyle: TextStyle(color: Colors.white),
-                                    prefixIcon:
-                                        Icon(Icons.store_mall_directory_sharp,color: Colors.white,),
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(
+                                      Icons.store_mall_directory_sharp,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -349,9 +364,11 @@ class _signupState extends State<signup> {
                                 style: TextStyle(color: Colors.white),
                                 decoration: InputDecoration(
                                     labelText: " Enter the Store Address",
-                                     labelStyle: TextStyle(color: Colors.white),
-                                    prefixIcon:
-                                        Icon(Icons.store_mall_directory_sharp,color: Colors.white,),
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    prefixIcon: Icon(
+                                      Icons.store_mall_directory_sharp,
+                                      color: Colors.white,
+                                    ),
                                     border: OutlineInputBorder(),
                                     focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -373,27 +390,30 @@ class _signupState extends State<signup> {
                                     onPrimary: Colors.grey.shade600,
                                     elevation: 20,
                                     //minimumSize: Size(100, 50),
-                                    
-                                    shadowColor:
-                                        Colors.amber.shade300,
+
+                                    shadowColor: Colors.amber.shade300,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                   ),
                                   onPressed: () {
-                                    getLatLong();
-                                    
+                                    _circularloadingbar(context);
+                                    Future.delayed(const Duration(seconds: 1),
+                                        () {
+// Here you can write your code
+                                      getLatLong();
+                                      Navigator.of(context).pop();
+                                    });
                                   },
                                   child: Text(
                                     "Get live store location ",
-                                  
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   )),
                             ),
-                           /* ElevatedButton.icon(
+                            /* ElevatedButton.icon(
   onPressed: () {},
   icon: Icon( // <-- Icon
     Icons.download,
@@ -404,89 +424,120 @@ class _signupState extends State<signup> {
                             SizedBox(
                               height: 15,
                             ),
-                            Center(child: Container( padding: EdgeInsets.all(10), decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ), child: Text("latitude : $lat", textScaleFactor: 1.2, style: const TextStyle(fontSize: 15,color: Colors.white),))),
+                            Center(
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    child: Text(
+                                      "latitude : $lat",
+                                      textScaleFactor: 1.2,
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.white),
+                                    ))),
                             SizedBox(
                               height: 15,
                             ),
-                                  Center(child: Container( padding: EdgeInsets.all(10),  decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ), child: Text("longitude : $long", textScaleFactor: 1.2, style: const TextStyle(fontSize:15 ,color: Colors.white),))),
-
-                            
-
-
-                                    
-                                    SizedBox(
+                            Center(
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    child: Text(
+                                      "longitude : $long",
+                                      textScaleFactor: 1.2,
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.white),
+                                    ))),
+                            SizedBox(
                               height: 15,
                             ),
-                            
                             Center(
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.amber.shade300,
                                     onPrimary: Colors.grey.shade600,
                                     elevation: 20,
-                                   // minimumSize: Size(200, 50),
-                                    shadowColor:
-                                        Colors.amber.shade600,
-                                        shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      side: BorderSide(color: Colors.white70)),
-                                        
+                                    // minimumSize: Size(200, 50),
+                                    shadowColor: Colors.amber.shade600,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                        side:
+                                            BorderSide(color: Colors.white70)),
                                   ),
-                                  onPressed: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      await registerUserStore(email.text,password.text,name.text,int.parse(phone.text),store_name.text,storeaddress.text,lat,long);
-                                    //  print(mess());
-                                       if (json.decode(responseBody)["message"]=="User Already exists,Please go for login") 
-                                      {
-                                      
-                                       showDialog(context: context, builder:(BuildContext context){
-                                       return  AlertDialog
-                                       (
-                                        title: Text("User Already exists,Please go for login"),
-                                        content:  Text("Would You Like To go for login!!!"),
-                                        actions: 
-                                        [
-                                          TextButton(onPressed: ()
-                                          {
-                                            Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => Home()));
-                                          } , child:Text("Yes")),
-                                          TextButton(onPressed: (){} , child:Text("No")),
-                                        ],
-                                       );
-                                       });
-                                       
-                                       
-                                      }
-                                     else {
-                                           showDialog(context: context, builder:(BuildContext context){
-                                       return AlertDialog
-                                       (
-                                        title: Text(json.decode(responseBody)["message"]),
-                                        
-                                        actions: 
-                                        [
-                                          TextButton(onPressed: (){
-                                            Navigator.pop(context);
-                                          }, child:Text("Ok"))
-                                                  
-                                        ],
-                                       );
-                                       });
-                                       name.clear();
-                                       email.clear();
-                                       password.clear();
-                                       storeaddress.clear();
-                                      store_name.clear();
-                                      phone.clear();
-                                      
-
+                                  onPressed: () {
+                                    _circularloadingbar(context);
+                                    Future.delayed(
+                                       Duration(seconds: 1),
+                                        ()async 
+                                        {
+                                           if (formKey.currentState!.validate()) {
+                                      await registerUserStore(
+                                          email.text,
+                                          password.text,
+                                          name.text,
+                                          int.parse(phone.text),
+                                          store_name.text,
+                                          storeaddress.text,
+                                          lat,
+                                          long);
+                                      //  print(mess());
+                                      if (json.decode(
+                                              responseBody)["message"] ==
+                                          "User Already exists,Please go for login") {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "User Already exists,Please go for login"),
+                                                content: Text(
+                                                    "Would You Like To go for login!!!"),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Home()));
+                                                      },
+                                                      child: Text("Yes")),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("No")),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(json.decode(
+                                                    responseBody)["message"]),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Ok"))
+                                                ],
+                                              );
+                                            });
+                                        name.clear();
+                                        email.clear();
+                                        password.clear();
+                                        storeaddress.clear();
+                                        store_name.clear();
+                                        phone.clear();
                                       }
                                       print(email.text);
                                       print(password.text);
@@ -497,7 +548,11 @@ class _signupState extends State<signup> {
                                       print(store_name.text);
                                       print(phone.text);
                                     }
-                                     
+                                   else{ 
+                                    Navigator.of(context).pop();}
+
+                                    
+                                        });
                                   },
                                   child: Text(
                                     "SignUp",
