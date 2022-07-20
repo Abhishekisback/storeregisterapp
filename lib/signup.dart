@@ -4,9 +4,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:storeregisterapp/location/address.dart';
+import 'package:storeregisterapp/location/place.dart';
 import 'package:storeregisterapp/main.dart';
 import 'package:storeregisterapp/service/http_service.dart';
 import 'package:storeregisterapp/test.dart';
+import 'package:uuid/uuid.dart';
 
 class signup extends StatefulWidget {
   const signup({
@@ -20,7 +23,7 @@ class signup extends StatefulWidget {
 class _signupState extends State<signup> {
   bool imageAvailable = false;
   //late Uint8List imagefile;
-
+   
   final formKey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -32,6 +35,9 @@ class _signupState extends State<signup> {
   double? lat;
 
   double? long;
+  double? _lat;
+
+  double? _long;
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -413,6 +419,48 @@ class _signupState extends State<signup> {
                                     ),
                                   )),
                             ),
+                            SizedBox(height: 10,),
+                           /* ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.amber.shade300,
+                                    onPrimary: Colors.grey.shade600,
+                                    elevation: 20,
+                                    //minimumSize: Size(100, 50),
+
+                                    shadowColor: Colors.amber.shade300,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                  ),
+                                  onPressed: () async{
+                                   // generate a new token here
+                    final sessionToken = Uuid().v4();
+                    final Suggestion? result = await showSearch(
+                      context: context,
+                      delegate: AddressSearch(sessionToken),
+                    );
+                    // This will change the text displayed in the TextField
+                    if (result != null) {
+                      final placeDetails = await PlaceApiProvider(sessionToken)
+                          .getPlaceDetailFromId(result.placeId);
+                      setState(() {
+                        _lat = placeDetails.lat;
+                        _long = placeDetails.lng;
+
+                        print(_lat);
+                        print(_long);
+                        print(result.description);
+                      });
+                    }
+                                  },
+                                  child: Text(
+                                    "search location",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),*/
+                           
                             /* ElevatedButton.icon(
   onPressed: () {},
   icon: Icon( // <-- Icon
@@ -562,6 +610,7 @@ class _signupState extends State<signup> {
                                     ),
                                   )),
                             ),
+                            
                           ],
                         ),
                       ),

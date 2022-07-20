@@ -4,10 +4,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:storeregisterapp/addnewproducts.dart';
+import 'package:storeregisterapp/product_list_by_store_id.dart';
+import 'package:storeregisterapp/service/http_service.dart';
 
 class editproducts extends StatefulWidget {
   final String storeid_,
-      catid,
+      prodid,
       productname_,
       productprice,
       productdescription,
@@ -16,7 +18,7 @@ class editproducts extends StatefulWidget {
   const editproducts(
       {Key? key,
       required this.storeid_,
-      required this.catid,
+      required this.prodid,
       required this.productimage,
       required this.productdescription,
       required this.productname_,
@@ -96,7 +98,7 @@ class _editproductsState extends State<editproducts> {
                     //controller: usermailid,
 
                     style: TextStyle(color: Colors.green),
-                    initialValue: widget.catid,
+                    initialValue: widget.prodid,
                     decoration: InputDecoration(
 
                         //fillColor: Colors.green,
@@ -290,7 +292,12 @@ class _editproductsState extends State<editproducts> {
                                       )),
                                   TextButton(
                                       onPressed: () {
+
+                                        delete_products(widget.storeid_,widget.prodid);
                                         Navigator.pop(context);
+                                        Navigator.of(context).push(MaterialPageRoute(
+              builder: ((context) => CardPage(storeid: widget.storeid_))));
+
                                       },
                                       child: Text("Yes",
                                           style: TextStyle(

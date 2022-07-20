@@ -22,6 +22,7 @@ class _dashboardState extends State<dashboard> {
   String? usermail;
   String? userpassword;
   String? storeidl;
+  String ?loadingc="loading....";
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +45,11 @@ class _dashboardState extends State<dashboard> {
  showDialog(
             context: context,
             builder: (BuildContext context) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator(
+                 valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+                 strokeWidth: 5,
+                 
+                 ));
             },
           );
   }

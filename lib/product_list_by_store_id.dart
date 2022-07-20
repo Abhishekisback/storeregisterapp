@@ -125,7 +125,7 @@ class _cardPageState extends State<CardPage> {
     ),
 
           Container(
-            height: 2300,
+            height: 580,
             alignment: Alignment.centerLeft,
             child: ListView.builder(
               shrinkWrap: true,
@@ -210,7 +210,7 @@ class _cardPageState extends State<CardPage> {
                                   
                                   storeid_:widget.storeid,
                                   productimage: data.image,
-                                  catid: data.cat_id.toString(),
+                                  prodid: data.prod_id,
                                   productname_: data.name,
                                   productquantity: data.quantity,
                                   productprice: data.price,
@@ -270,7 +270,7 @@ class _cardPageState extends State<CardPage> {
 }
 
 class Product {
-  String cat_id;
+  String prod_id;
   String name;
   String price;
   String image;
@@ -278,7 +278,7 @@ class Product {
   String quantity;
 
   Product(
-    this.cat_id,
+    this.prod_id,
     this.name,
     this.price,
     this.image,
