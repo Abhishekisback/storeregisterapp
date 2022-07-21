@@ -67,7 +67,7 @@ class _editproductsState extends State<editproducts> {
     request.fields['quantity'] = widget.productquantity;
     request.fields['product_id'] = widget.prodid;
     request.fields['store_id'] = widget.storeid_;
-    request.fields['category_name'] = widget.categoryid;
+    request.fields['category_id'] = widget.categoryid;
 
     var res = await request.send();
     print(request);
@@ -359,6 +359,7 @@ class _editproductsState extends State<editproducts> {
                                       )),
                                   TextButton(
                                       onPressed: () async {
+                                      //  print(_imageFile!.path);
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -373,6 +374,7 @@ class _editproductsState extends State<editproducts> {
                                           },
                                         );
                                         if (_imageFile != null) {
+                                          
                                           Future.delayed(Duration(seconds: 3),
                                               () async {
                                             Navigator.pop(context);
@@ -381,22 +383,48 @@ class _editproductsState extends State<editproducts> {
                                           var res = await uploadImage(
                                               _imageFile!.path, uploadUrl);
                                           print(res);
+                                          if(res=="OK"){
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text(res),
+                                                title: Text("Server Response"),
+                                                content: Text("Product Details Updated Successfully"),
                                               );
                                             },
                                           );
+                                          }
                                         } else {
                                           Future.delayed(Duration(seconds: 3),
                                               () async {
                                             Navigator.pop(context);
                                             Navigator.of(context).pop();
-                                            var res = await uploadImage(
-                                                widget.productimage, uploadUrl);
-                                            print(res);
+                                             var res = await uploadImage(
+                                              widget.productimage, uploadUrl);
+                                          print(res);
+                                          if(res=="OK"){
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Server Response"),
+                                                content: Text("Product Details Updated Successfully"),
+                                              );
+                                            },
+                                          );
+                                          }
+                                          else{
+                                            showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Server Response"),
+                                                content: Text("Error in Updating product details !!!"),
+                                              );
+                                            },
+                                          );
+
+                                          }
                                           });
                                         }
                                       },

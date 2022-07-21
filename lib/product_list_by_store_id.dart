@@ -84,46 +84,7 @@ class _cardPageState extends State<CardPage> {
     if (items.toString() != "[]") {
       return Column(
         children: [
-          Container(
-      padding: EdgeInsets.all(16),
-      child: TypeAheadField<ProductSearch>(
-        hideSuggestionsOnKeyboardHide: false,
-        textFieldConfiguration: TextFieldConfiguration(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(),
-            hintText: 'Search Products',
-          ),
-        ),
-        suggestionsCallback: getProduct.getUserSuggestions,
-        itemBuilder: (context, ProductSearch suggestion) {
-          final product = suggestion;
-
-          return ListTile(
-            title: Text(product.Pname),
-          );
-        },
-        noItemsFoundBuilder: (context) => Container(
-          height: 100,
-          child: Center(
-            child: Text(
-              'No Users Found.',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
-        ),
-        onSuggestionSelected: (ProductSearch suggestion) {
-          final product = suggestion;
-
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text('Selected user: ${product.Pname}'),
-            ));
-        },
-      ),
-    ),
-
+          
           Container(
             height: 580,
             alignment: Alignment.centerLeft,
