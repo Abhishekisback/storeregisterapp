@@ -12,16 +12,21 @@ import 'package:storeregisterapp/signup.dart';
 
 class addnewprod extends StatelessWidget {
   final userstoreid;
-  String email_user,pass_word;
-  addnewprod({Key? key, required this.userstoreid,required this.email_user,required this.pass_word}) : super(key: key);
+  String email_user, pass_word;
+  addnewprod(
+      {Key? key,
+      required this.userstoreid,
+      required this.email_user,
+      required this.pass_word})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MyImagePicker(
         user_storeid: userstoreid,
-        email_user:email_user,
-        pass_word:pass_word,
+        email_user: email_user,
+        pass_word: pass_word,
       ),
       debugShowCheckedModeBanner: false,
     );
@@ -30,22 +35,32 @@ class addnewprod extends StatelessWidget {
 
 class MyImagePicker extends StatefulWidget {
   final user_storeid;
-  String email_user,pass_word;
-  MyImagePicker({Key, key, required this.user_storeid,required this.email_user,required this.pass_word,}) : super(key: key);
+  String email_user, pass_word;
+  MyImagePicker({
+    Key,
+    key,
+    required this.user_storeid,
+    required this.email_user,
+    required this.pass_word,
+  }) : super(key: key);
 
   @override
-  _MyImagePickerState createState() =>
-      _MyImagePickerState(userstoreid_: user_storeid,
-                       email_user: email_user,
-                       pass_word: pass_word,
+  _MyImagePickerState createState() => _MyImagePickerState(
+        userstoreid_: user_storeid,
+        email_user: email_user,
+        pass_word: pass_word,
       );
 }
 
 class _MyImagePickerState extends State<MyImagePicker> {
   String userstoreid_;
-  String email_user,pass_word;
-  _MyImagePickerState({Key? key, required this.userstoreid_,required this.email_user,required this.pass_word});
-  
+  String email_user, pass_word;
+  _MyImagePickerState(
+      {Key? key,
+      required this.userstoreid_,
+      required this.email_user,
+      required this.pass_word});
+
   final String uploadUrl = 'http://65.0.182.184/uploadproducts';
   final ImagePicker _picker = ImagePicker();
   PickedFile? _imageFile;
@@ -56,13 +71,12 @@ class _MyImagePickerState extends State<MyImagePicker> {
     "Fruits and Vegetables",
     "Bakery",
     "Grocery",
-    "Electronics",
     "select category"
   ];
 
   String sub = 'select category';
   String selectedSubject = "select category";
-  String ?responsed;
+  String? responsed;
   String emailpattern =
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
 
@@ -116,31 +130,36 @@ class _MyImagePickerState extends State<MyImagePicker> {
                   width: 200,
                   height: 300,
                   child: Image.file(File(_imageFile!.path))),
-                  onTap: _pickImage,
+              onTap: _pickImage,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                  elevation: 10,
+                  color: Colors.white,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: TextFormField(
+                        controller: productdescription,
+                        maxLines: 8, //or null
+                        decoration: InputDecoration.collapsed(
+                            hintText: "Add Product Description here !"),
+                        validator: (productdescription) {
+                          if (productdescription!.isEmpty) {
+                            return "Add Description";
+                          } else {
+                            print("Description\t"
+                                '$productdescription');
+                          }
+                        }),
+                  )),
             ),
             SizedBox(
               height: 20,
             ),
-            Card(
-                               color: Colors.grey,
-                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                 child: TextFormField(
-                                     controller: productdescription,
-                                     maxLines: 8, //or null
-                                     decoration: InputDecoration.collapsed(
-                                        hintText:
-                                             "Add Product Description here !"),
-                                     validator: (productdescription) {
-                                       if (productdescription!.isEmpty) {
-                                         return "Add Description";
-                                       } else {
-                                         print("Description\t"
-                                             '$productdescription');
-                                       }
-                                     }),
-                               )),
-                               SizedBox(height: 20,),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.lightBlue,
@@ -153,53 +172,67 @@ class _MyImagePickerState extends State<MyImagePicker> {
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   // if(sub!="select category")
-            if( sub!="select category"){
-                  var res = await uploadImage(_imageFile!.path, uploadUrl);
-                   responsed = res;
+                  if (sub != "select category") {
+                    var res = await uploadImage(_imageFile!.path, uploadUrl);
+                    responsed = res;
                     if (responsed == "OK") {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog
-                        (
-                           title: Text("Server Response"),
-                           content: Text("Product Added Successfully"),
-
+                      CircularProgressIndicator();
+                      Future.delayed(Duration(seconds: 2), () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Server Response"),
+                              content: Text("Product Added Successfully"),
+                            );
+                          },
                         );
-                      },
-                    );
-                  } 
-                   else {
+                      });
+
+                      productdescription.clear();
+                      productname.clear();
+                      pprice.clear();
+                      pquantity.clear();
+                      sub = "select category";
+                    } else {
+                       CircularProgressIndicator();
+                      Future.delayed(Duration(seconds: 2), () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Server Response"),
+                              content: Text("Error Occured While Adding product ??"),
+                            );
+                          },
+                        );
+                      });
+                    }
+                  } else {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text("Server Response"),
-                           content: Text("Error occured on adding"),
-                        );
-                      },
-                    );
-                  } 
-            }
-            else{
-              showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog
-                        (
                           title: Text("Required"),
                           content: Text("Please select the category field ?"),
-                                    actions: [
-                                      TextButton(onPressed: (){Navigator.pop(context);}, child: Text("OK",style: TextStyle(color: Colors.green,fontSize: 15),))
-                                    ],
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "OK",
+                                  style: TextStyle(
+                                      color: Colors.green, fontSize: 15),
+                                ))
+                          ],
                         );
                       },
                     );
-
-            }
+                  }
                   // print("server response" + res);
-                
-                } 
+
+                }
               },
               child: const Text(
                 'Add Now',
@@ -274,22 +307,22 @@ class _MyImagePickerState extends State<MyImagePicker> {
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              accountName: Text(email_user.toString().substring(0,4)),
-              accountEmail: Text( email_user.toString()),
+              accountName: Text(email_user.toString().substring(0, 4)),
+              accountEmail: Text(email_user.toString()),
               currentAccountPicture: CircleAvatar(
                 backgroundColor: Colors.pink.shade50,
-                child: Text(email_user.toString().substring(0,4)),
+                child: Text(email_user.toString().substring(0, 4)),
               ),
             ),
             ListTile(
-              
               title: Text(
                 "Recent Updates",
                 textDirection: TextDirection.ltr,
               ),
               leading: Icon(Icons.update),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CardPage(storeid:userstoreid_)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CardPage(storeid: userstoreid_)));
               },
             ),
             ListTile(
@@ -299,20 +332,17 @@ class _MyImagePickerState extends State<MyImagePicker> {
               onTap: () {},
             ),
             ListTile(
-              
-              title: Text('username :$email_user', textDirection: TextDirection.ltr),
+              title: Text('username :$email_user',
+                  textDirection: TextDirection.ltr),
               leading: Icon(Icons.supervised_user_circle_sharp),
-              onTap: () {
-                
-              },
+              onTap: () {},
             ),
-            
+
             // ignore: prefer_const_constructors
             Divider(
               height: 10,
               thickness: 10,
             ),
-            
           ],
         ),
       ),
@@ -322,12 +352,11 @@ class _MyImagePickerState extends State<MyImagePicker> {
             SizedBox(
               height: 20,
             ),
-           
+
             Center(
               child: Container(
                 padding:
                     EdgeInsets.only(left: 50, right: 50, top: 10, bottom: 10),
-               
                 child: SizedBox(
                   width: 300,
                   child: Form(
@@ -357,16 +386,26 @@ class _MyImagePickerState extends State<MyImagePicker> {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return AlertDialog
-                                      (
-                                           title: Text("Category Selected\n"),
-                                           content: Text(sub,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 15),),
-                                           actions: 
-                                           [
-                                            TextButton(onPressed: (){Navigator.pop(context);}, child: Text("OK",style: TextStyle(color: Colors.green,fontSize: 15),))
-                                            
-                                           ],
-
+                                      return AlertDialog(
+                                        title: Text("Category Selected\n"),
+                                        content: Text(
+                                          sub,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text(
+                                                "OK",
+                                                style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontSize: 15),
+                                              ))
+                                        ],
                                       );
                                     },
                                   );
@@ -383,13 +422,14 @@ class _MyImagePickerState extends State<MyImagePicker> {
                           ),
                         ),
                         SizedBox(
-                          height: 25,
+                          height: 30,
                         ),
                         SizedBox(
                           width: 300,
                           child: TextFormField(
                             initialValue: userstoreid_.toString(),
                             readOnly: true,
+                            style: TextStyle(color: Colors.green),
                             decoration: InputDecoration(
                                 labelText: "Store Id",
                                 prefixIcon: Icon(Icons.mail_lock),
@@ -406,9 +446,11 @@ class _MyImagePickerState extends State<MyImagePicker> {
                           width: 300,
                           child: TextFormField(
                             controller: productname,
+                            style: TextStyle(color: Colors.green),
                             decoration: InputDecoration(
                                 labelText: "Enter Product Name",
-                                prefixIcon: Icon(Icons.production_quantity_limits),
+                                prefixIcon:
+                                    Icon(Icons.production_quantity_limits),
                                 border: OutlineInputBorder(),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -425,13 +467,14 @@ class _MyImagePickerState extends State<MyImagePicker> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         SizedBox(
                           width: 300,
                           child: TextFormField(
                             controller: pprice,
                             keyboardType: TextInputType.number,
+                            style: TextStyle(color: Colors.green),
                             decoration: InputDecoration(
                                 labelText: "Enter Product Price",
                                 prefixIcon: Icon(Icons.price_check_sharp),
@@ -456,9 +499,11 @@ class _MyImagePickerState extends State<MyImagePicker> {
                           child: TextFormField(
                             controller: pquantity,
                             keyboardType: TextInputType.number,
+                            style: TextStyle(color: Colors.green),
                             decoration: InputDecoration(
                                 labelText: "Enter Product Quantity ",
-                                prefixIcon: Icon(Icons.production_quantity_limits),
+                                prefixIcon:
+                                    Icon(Icons.production_quantity_limits),
                                 border: OutlineInputBorder(),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -475,30 +520,32 @@ class _MyImagePickerState extends State<MyImagePicker> {
                         SizedBox(
                           height: 30,
                         ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Center(
-                            child: ElevatedButton.icon(
-                              icon: Icon(
-                                Icons.photo_album_rounded,
-                                size: 30,
-                              ),
-                              label: Text("Pick From Galery "),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.lightBlue,
-                                onPrimary: Colors.white,
-                                minimumSize: Size(200, 50),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    side: BorderSide(color: Colors.white70)),
-                              ),
-                              onPressed: () {
-                                _pickImage();
-                              },
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.photo_album_rounded,
+                              size: 30,
                             ),
+                            label: Text("Pick From Galery "),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.lightBlue,
+                              onPrimary: Colors.white,
+                              minimumSize: Size(200, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  side: BorderSide(color: Colors.white70)),
+                            ),
+                            onPressed: () {
+                              _pickImage();
+                            },
                           ),
-                          SizedBox(height: 20,),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Center(
                             child: FutureBuilder<void>(
                           future: retriveLostData(),
@@ -515,8 +562,6 @@ class _MyImagePickerState extends State<MyImagePicker> {
                             }
                           },
                         )),
-                      
-                     
                         SizedBox(
                           height: 10,
                         ),
@@ -541,8 +586,8 @@ class _MyImagePickerState extends State<MyImagePicker> {
             SizedBox(
               height: 30,
             ),
-          //  Center(child: Text("Follow Us")),
-        /*    Container(
+            //  Center(child: Text("Follow Us")),
+            /*    Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

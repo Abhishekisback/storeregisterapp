@@ -207,7 +207,7 @@ class _cardPageState extends State<CardPage> {
                               print("pressed");
                               Navigator.of(context).push(
                                 MaterialPageRoute(builder: ((context) => editproducts(
-                                  
+                                  categoryid: data.cat_id,
                                   storeid_:widget.storeid,
                                   productimage: data.image,
                                   prodid: data.prod_id,
@@ -261,6 +261,7 @@ class _cardPageState extends State<CardPage> {
             json.decode(productresponseBody)["products"][i]["product_images"][0],
             json.decode(productresponseBody)["products"][i]["product_description"],
             json.decode(productresponseBody)["products"][i]["quantity"],
+                json.decode(productresponseBody)["products"][i]["category_id"],
                 );
         list.add(data);
       }
@@ -276,6 +277,7 @@ class Product {
   String image;
   String desc;
   String quantity;
+  String cat_id;
 
   Product(
     this.prod_id,
@@ -284,5 +286,6 @@ class Product {
     this.image,
     this.desc,
     this.quantity,
+    this.cat_id
   );
 }

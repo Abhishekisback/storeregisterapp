@@ -71,16 +71,18 @@ class _HomeState extends State<Home> {
      
       key: _scaffoldKey,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(90.0),
+        preferredSize: Size.fromHeight(60.0),
         child: AppBar(
+          
           title: Text(
             "Join with us ,Integrate your business Online",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
-          flexibleSpace: Image(
+          backgroundColor: Color.fromARGB(255, 105, 171, 224),
+        /*  flexibleSpace: Image(
             image: AssetImage('lib/images/image2.jpeg'),
             fit: BoxFit.cover,
-          ),
+          ),*/
           centerTitle: true,
         ),
       ),
@@ -91,9 +93,9 @@ class _HomeState extends State<Home> {
         child: Container(
           alignment: Alignment.center,
           decoration: const BoxDecoration(
-            image: DecorationImage(
+           /* image: DecorationImage(
                 image: AssetImage("lib/images/loginimage.jpeg"),
-                fit: BoxFit.cover),
+                fit: BoxFit.cover),*/
           ),
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Column(
@@ -108,7 +110,7 @@ class _HomeState extends State<Home> {
                     "WELCOME TO ",
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: Colors.black,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.bold,
                     ),
@@ -124,7 +126,7 @@ class _HomeState extends State<Home> {
                     "NEW STORE REGISTRATION !!",
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: Colors.black,
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.bold,
                     ),
@@ -142,7 +144,7 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.only(
                       left: 50, right: 50, top: 10, bottom: 10),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 2),
+                    border: Border.all(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                   child: SizedBox(
@@ -160,7 +162,7 @@ class _HomeState extends State<Home> {
                             "Sign In",
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.white,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           )),
@@ -171,14 +173,14 @@ class _HomeState extends State<Home> {
                             width: 300,
                             child: TextFormField(
                               controller: usermailid,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
-                                  fillColor: Colors.white,
+                                  fillColor: Colors.black,
                                   labelText: "Enter Mail ID",
-                                  labelStyle: TextStyle(color: Colors.white),
+                                  labelStyle: TextStyle(color: Colors.black),
                                   prefixIcon: Icon(
                                     Icons.mail_lock,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(),
                                   focusedBorder: OutlineInputBorder(
@@ -203,13 +205,13 @@ class _HomeState extends State<Home> {
                             child: TextFormField(
                               controller: userpassword,
                               obscureText: true,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
                                   labelText: "Enter Your Password ",
-                                  labelStyle: TextStyle(color: Colors.white),
+                                  labelStyle: TextStyle(color: Colors.black),
                                   prefixIcon: Icon(
                                     Icons.password_rounded,
-                                    color: Colors.white,
+                                    color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(),
                                   focusedBorder: OutlineInputBorder(
@@ -341,7 +343,7 @@ class _HomeState extends State<Home> {
                               Text(
                                 "Don't have an account? ",
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
+                                    fontSize: 15, color: Colors.black),
                               ),
                               new GestureDetector(
                                 onTap: () {

@@ -11,7 +11,7 @@ class splashscreen extends StatefulWidget {
 }
 
 class _splashscreenState extends State<splashscreen>
-    with TickerProviderStateMixin {
+     {
   @override
  
   SharedPreferences? logindata;
@@ -48,28 +48,29 @@ class _splashscreenState extends State<splashscreen>
 
 _splashfunction(context) {
   return AnimatedSplashScreen(
-    splash: Column(
-      children: [
-        Container(
-            height: 100,
-            width: 100,
-            child: Text(
-              "Welcome",
-              style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,),
-            )),
-        LinearProgressIndicator(
-         // value:4,
-          minHeight: 10,
-           backgroundColor: Colors.cyanAccent,
-    valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-
-
-          ),
-      ],
+    
+    splash: SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+         
+              Image.asset('lib/images/Capture12.png',scale: 3,),
+    
+          LinearProgressIndicator(
+           // value:4,
+            minHeight: 10,
+             backgroundColor: Colors.cyanAccent,
+      valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+    
+    
+            ),
+        ],
+      ),
     ),
     nextScreen: Home(),
     duration: 3500,
-    splashTransition: SplashTransition.rotationTransition,
+    splashTransition: SplashTransition.slideTransition,
     splashIconSize: 150,
   );
 }

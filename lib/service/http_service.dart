@@ -147,3 +147,35 @@ delete_products(store_id, product_id) async {
  // print(storeid);
 }
 
+/*product_update(store_id, product_id) async {
+  final uri = Uri.parse('$ipAddress/deleteproduct');
+  final headers = {'Content-Type': 'application/json'};
+  
+  Map<String, dynamic> body = {
+  'product_id': product_id,
+  'product_name': product_name,
+  'product_description':product_description,
+  'price':price,
+  'quantity':quantity,
+  'store_id':store_id,
+  'category_name':category_name,
+  };
+  String jsonBody = json.encode(body);
+  final encoding = Encoding.getByName('utf-8');
+
+  Response response = await post(
+    uri,
+    headers: headers,
+    body: jsonBody,
+    encoding: encoding,
+  );
+ 
+  int statusCode = response.statusCode;
+  delresponseBody = response.body;
+  print(delresponseBody);
+
+  //print(json.decode(logresponseBody)["message"]);
+//  storeid=json.decode(logresponseBody)["store_user"]["store_id"];
+ // print(storeid);
+}*/
+
