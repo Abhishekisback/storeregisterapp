@@ -40,6 +40,7 @@ class _editproductsState extends State<editproducts> {
   TextEditingController productquantity = TextEditingController();
   TextEditingController productprice = TextEditingController();
   TextEditingController productdescription = TextEditingController();
+   final formKey = GlobalKey<FormState>();
 
   final String uploadUrl = 'http://65.0.182.184/productupdate';
 
@@ -130,348 +131,353 @@ class _editproductsState extends State<editproducts> {
         appBar: AppBar(title: Text("Edit")),
         body: SingleChildScrollView(
           child: Container(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  margin: EdgeInsets.all(10.0),
-                  width: 300,
-                  height: 200,
-                  child: Image.network(
-                    widget.productimage,
-                    scale: 5,
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
                   ),
-                ),
-                /*    TextButton(
-                    onPressed: () {
-                      print("change image  pressed");
-                      _pickImage();
+                  Container(
+                    margin: EdgeInsets.all(10.0),
+                    width: 300,
+                    height: 200,
+                    child: Image.network(
+                      widget.productimage,
+                      scale: 5,
+                    ),
+                  ),
+                  /*    TextButton(
+                      onPressed: () {
+                        print("change image  pressed");
+                        _pickImage();
+                      },
+                      child: Text("Change Image")),*/
+                  Center(
+                      child: FutureBuilder<void>(
+                    future: retriveLostData(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return const Text('Picked an image');
+                        case ConnectionState.done:
+                          return _previewImage();
+                        default:
+                          return const Text('Picked an image');
+                      }
                     },
-                    child: Text("Change Image")),*/
-                Center(
-                    child: FutureBuilder<void>(
-                  future: retriveLostData(),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<void> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return const Text('Picked an image');
-                      case ConnectionState.done:
-                        return _previewImage();
-                      default:
-                        return const Text('Picked an image');
-                    }
-                  },
-                )),
-                SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    readOnly: true,
-                    //controller: usermailid,
-
-                    showCursor: false,
-                    style: TextStyle(color: Colors.green),
-                    initialValue: widget.prodid,
-                    decoration: const InputDecoration(
-
-                        //fillColor: Colors.green,
-
-                        labelText: "Product Id",
-                        labelStyle: TextStyle(color: Colors.black),
-                        prefixIcon: Icon(
-                          Icons.card_travel_rounded,
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.0))),
+                  )),
+                  SizedBox(
+                    height: 30,
                   ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    readOnly: true,
-                    //controller: usermailid,
-
-                    showCursor: false,
-                    style: TextStyle(color: Colors.green),
-                    initialValue: widget.categoryid,
-                    decoration: const InputDecoration(
-
-                        //fillColor: Colors.green,
-
-                        labelText: "category_id",
-                        labelStyle: TextStyle(color: Colors.black),
-                        prefixIcon: Icon(
-                          Icons.card_travel_rounded,
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.0))),
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    initialValue: widget.productname_,
-
-                    //controller: usermailid,
-
-                    style: const TextStyle(color: Colors.green),
-                    readOnly: true,
-                    showCursor: false,
-                    decoration: const InputDecoration(
-
-                        //fillColor: Colors.green,
-
-                        labelText: "product name",
-                        labelStyle: TextStyle(color: Colors.black),
-                        prefixIcon: Icon(
-                          Icons.supervised_user_circle_sharp,
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.0))),
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    initialValue: widget.productquantity,
-
-                    //controller: usermailid,
-
-                    style: const TextStyle(color: Colors.green),
-                    readOnly: true,
-                    showCursor: false,
-                    decoration: const InputDecoration(
-
-                        //fillColor: Colors.green,
-
-                        labelText: "product quantity",
-                        labelStyle: TextStyle(color: Colors.black),
-                        prefixIcon: Icon(
-                          Icons.production_quantity_limits_sharp,
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.0))),
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: 300,
-                  child: TextFormField(
-                    initialValue: widget.productprice,
-
-                    //controller: usermailid,
-
-                    style: const TextStyle(color: Colors.green),
-                    readOnly: true,
-                    showCursor: false,
-                    decoration: const InputDecoration(
-
-                        //fillColor: Colors.green,
-
-                        labelText: "product price",
-                        labelStyle: TextStyle(color: Colors.black),
-                        prefixIcon: Icon(
-                          Icons.price_check,
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.0))),
-                  ),
-                ),
-                Padding(
-                    padding: EdgeInsets.all(30.0),
-                    child: Card(
-                      color: Colors.white,
-                      elevation: 10,
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      readOnly: true,
+                      //controller: usermailid,
+            
+                      showCursor: false,
+                      style: TextStyle(color: Colors.green),
+                      initialValue: widget.prodid,
+                      decoration: const InputDecoration(
+            
+                          //fillColor: Colors.green,
+            
+                          labelText: "Product Id",
+                          labelStyle: TextStyle(color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.card_travel_rounded,
+                            color: Colors.black,
                           ),
-                          TextFormField(
-                              initialValue: widget.productdescription,
-                              maxLines: 8, //or null
-                              readOnly: true,
-                              showCursor: false,
-                              decoration: const InputDecoration.collapsed(
-                                  hintText: "Add Product Description here !",
-                                  hintStyle: TextStyle(
-                                    color: Colors.white,
-                                  )),
-                              validator: (productdescription) {
-                                if (productdescription!.isEmpty) {
-                                  return "Add Description";
-                                } else {
-                                  print("Description\t"
-                                      '$productdescription');
-                                }
-                              }),
-                        ],
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1.0))),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      readOnly: true,
+                      //controller: usermailid,
+            
+                      showCursor: false,
+                      style: TextStyle(color: Colors.green),
+                      initialValue: widget.categoryid,
+                      decoration: const InputDecoration(
+            
+                          //fillColor: Colors.green,
+            
+                          labelText: "category_id",
+                          labelStyle: TextStyle(color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.card_travel_rounded,
+                            color: Colors.black,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1.0))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      initialValue: widget.productname_,
+            
+                      //controller: usermailid,
+            
+                      style: const TextStyle(color: Colors.green),
+                      readOnly: true,
+                      showCursor: false,
+                      decoration: const InputDecoration(
+            
+                          //fillColor: Colors.green,
+            
+                          labelText: "product name",
+                          labelStyle: TextStyle(color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.supervised_user_circle_sharp,
+                            color: Colors.black,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1.0))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      initialValue: widget.productquantity,
+            
+                      //controller: usermailid,
+            
+                      style: const TextStyle(color: Colors.green),
+                      readOnly: true,
+                      showCursor: false,
+                      decoration: const InputDecoration(
+            
+                          //fillColor: Colors.green,
+            
+                          labelText: "product quantity",
+                          labelStyle: TextStyle(color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.production_quantity_limits_sharp,
+                            color: Colors.black,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1.0))),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      initialValue: widget.productprice,
+            
+                      //controller: usermailid,
+            
+                      style: const TextStyle(color: Colors.green),
+                      readOnly: true,
+                      showCursor: false,
+                      decoration: const InputDecoration(
+            
+                          //fillColor: Colors.green,
+            
+                          labelText: "product price",
+                          labelStyle: TextStyle(color: Colors.black),
+                          prefixIcon: Icon(
+                            Icons.price_check,
+                            color: Colors.black,
+                          ),
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1.0))),
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(30.0),
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 10,
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            TextFormField(
+                                initialValue: widget.productdescription,
+                                maxLines: 8, //or null
+                                readOnly: true,
+                                showCursor: false,
+                                decoration: const InputDecoration.collapsed(
+                                    hintText: "Add Product Description here !",
+                                    hintStyle: TextStyle(
+                                      color: Colors.white,
+                                    )),
+                                validator: (productdescription) {
+                                  if (productdescription!.isEmpty) {
+                                    return "Add Description";
+                                  } else {
+                                    print("Description\t"
+                                        '$productdescription');
+                                  }
+                                }),
+                          ],
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 50,
                       ),
-                    )),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    ElevatedButton.icon(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text(
-                                    "Do You Want to Update the changes made ?"),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text(
-                                        "No",
-                                        style: TextStyle(
-                                            fontSize: 17, color: Colors.green),
-                                      )),
-                                  TextButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(Colors.green),
-                                              strokeWidth: 5,
-                                            ));
-                                          },
-                                        );
-                                        Future.delayed(Duration(seconds: 2),
-                                            () {
+                      ElevatedButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                      "Do You Want to Update the changes made ?"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
                                           Navigator.pop(context);
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      editproduct(
-                                                          storeid_:
-                                                              widget.storeid_,
-                                                          prodid: widget.prodid,
-                                                          productimage: widget
-                                                              .productimage,
-                                                          categoryid: widget
-                                                              .categoryid))));
-
-                                          // Do something
-                                        });
-                                      },
-                                      child: const Text(
-                                        "Yes",
-                                        style: TextStyle(
-                                            fontSize: 17, color: Colors.green),
-                                      )),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: Icon(Icons.edit),
-                        label: Text("Edit  Details ")),
-                    Spacer(),
-                    ElevatedButton.icon(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Do You Want to Delete ?"),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text(
-                                        "No",
-                                        style: TextStyle(
-                                            fontSize: 17, color: Colors.green),
-                                      )),
-                                  TextButton(
-                                      onPressed: () async {
-                                        await delete_products(
-                                            widget.storeid_, widget.prodid);
-                                        //Navigator.pop(context);
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text(json.decode(
-                                                  delresponseBody)["message"]),
-                                            );
-                                          },
-                                        );
-                                        Future.delayed(Duration(seconds: 3),
-                                            () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      CardPage(
-                                                          storeid: widget
-                                                              .storeid_))));
-                                        });
-                                      },
-                                      child: Text("Yes",
+                                        },
+                                        child: const Text(
+                                          "No",
                                           style: TextStyle(
-                                              fontSize: 17,
-                                              color: Colors.green))),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: Icon(Icons.delete),
-                        label: Text("delete ")),
-                    SizedBox(
-                      width: 50,
-                    ),
-                  ],
-                ),
-              ],
+                                              fontSize: 17, color: Colors.green),
+                                        )),
+                                    TextButton(
+                                        onPressed: () {
+                                          if (formKey.currentState!.validate()){
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                valueColor:
+                                                    new AlwaysStoppedAnimation<
+                                                        Color>(Colors.green),
+                                                strokeWidth: 5,
+                                              ));
+                                            },
+                                          );
+                                          Future.delayed(Duration(seconds: 2),
+                                              () {
+                                            Navigator.pop(context);
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        editproduct(
+                                                            storeid_:
+                                                                widget.storeid_,
+                                                            prodid: widget.prodid,
+                                                            productimage: widget
+                                                                .productimage,
+                                                            categoryid: widget
+                                                                .categoryid))));
+            
+                                            // Do something
+                                          });
+                                        }
+                              },
+                                        child: const Text(
+                                          "Yes",
+                                          style: TextStyle(
+                                              fontSize: 17, color: Colors.green),
+                                        )),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: Icon(Icons.edit),
+                          label: Text("Edit  Details ")),
+                      Spacer(),
+                      ElevatedButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Do You Want to Delete ?"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "No",
+                                          style: TextStyle(
+                                              fontSize: 17, color: Colors.green),
+                                        )),
+                                    TextButton(
+                                        onPressed: () async {
+                                          await delete_products(
+                                              widget.storeid_, widget.prodid);
+                                          //Navigator.pop(context);
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(json.decode(
+                                                    delresponseBody)["message"]),
+                                              );
+                                            },
+                                          );
+                                          Future.delayed(Duration(seconds: 3),
+                                              () {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        CardPage(
+                                                            storeid: widget
+                                                                .storeid_))));
+                                          });
+                                        },
+                                        child: Text("Yes",
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.green))),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: Icon(Icons.delete),
+                          label: Text("delete ")),
+                      SizedBox(
+                        width: 50,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ));

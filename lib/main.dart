@@ -374,7 +374,7 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             height: 25,
                           ),
-                          Center(
+                        /*  Center(
                             child: Container(
                               child: new GestureDetector(
                                 onTap: () {
@@ -394,7 +394,7 @@ class _HomeState extends State<Home> {
                                 ),
                               ),
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),
