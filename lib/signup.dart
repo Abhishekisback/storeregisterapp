@@ -1,5 +1,8 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:google_place/google_place.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -91,6 +94,41 @@ class _signupState extends State<signup> {
     }).catchError((error) {
       print("Error $error");
     });
+  }
+  final _startSearchFieldController = TextEditingController();
+  final _endSearchFieldController = TextEditingController();
+
+  DetailsResult? startposition;
+  late FocusNode? startfocusnode;
+  late GooglePlace googlePlace;
+  List<AutocompletePrediction> prediction_ = [];
+  Timer? _debounce;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    String apiKey = 'AIzaSyATsJ5AVf-v6hq8HJ7fJ1f802wnP7EgW9M';
+    googlePlace = GooglePlace(apiKey);
+    startfocusnode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    startfocusnode!.dispose();
+  }
+
+  void autoCompleteSearch(String value) async {
+    print(value);
+    var result = await googlePlace.autocomplete.get(value);
+    if (result != null && result.predictions != null && mounted) {
+      print(result.predictions!.first.description);
+      setState(() {
+        prediction_ = result.predictions!;
+      });
+    }
   }
 
   _circularloadingbar(BuildContext context) {
@@ -420,6 +458,79 @@ class _signupState extends State<signup> {
                                   )),
                             ),
                             SizedBox(height: 10,),
+                           
+                             TextField(
+              focusNode: startfocusnode,
+              controller: _startSearchFieldController,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Search location',
+                  
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  border: InputBorder.none,
+                  suffixIcon: _startSearchFieldController.text.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            setState(() {
+                              prediction_ = [];
+                              _startSearchFieldController.clear();
+                            });
+                          },
+                          icon: Icon(Icons.clear),
+                        )
+                      : null),
+              onChanged: (value) {
+                if (_debounce?.isActive ?? false) _debounce!.cancel();
+                _debounce = Timer(const Duration(milliseconds: 1000), () {
+                  if (value.isNotEmpty) {
+                    //places api
+                    autoCompleteSearch(value);
+                  } else {
+                    //clear out the results
+                    setState(() {
+                      prediction_ = [];
+                      startposition = null;
+                    });
+                  }
+                });
+              },
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: prediction_.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 5,
+                  color: Colors.white,
+                  child: ListTile(
+                     
+                    leading: Icon(Icons.pin_drop),
+                    title: Text(prediction_[index].description.toString()),
+                    onTap: () async {
+                      final placeid = prediction_[index].placeId;
+                      final details =
+                          await googlePlace.details.get(placeid.toString(),);
+                      if (details != null && details.result != null && mounted) {
+                        if (startfocusnode!.hasFocus) {
+                          setState(() {
+                            startposition = details.result;
+                            _lat=details.result!.geometry!.location!.lat;
+                            _long=details.result!.geometry!.location!.lng;
+                            print(_lat);
+                            print(_long);
+                            _startSearchFieldController.text =
+                                details.result!.name!;
+                                print(details.result);
+                          });
+                          prediction_ = [];
+                        }
+                      }
+                    },
+                  ),
+                );
+              },
+            ),
                            /* ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.amber.shade300,

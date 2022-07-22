@@ -7,7 +7,7 @@ import 'package:storeregisterapp/service/http_service.dart';
 import 'package:storeregisterapp/signup.dart';
 import 'package:storeregisterapp/splash.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -183,7 +183,7 @@ class _HomeState extends State<Home> {
                                     color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(),
-                                  focusedBorder: OutlineInputBorder(
+                                enabledBorder:OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.black, width: 1.0))),
                               validator: (lmailid) {
@@ -214,7 +214,7 @@ class _HomeState extends State<Home> {
                                     color: Colors.black,
                                   ),
                                   border: OutlineInputBorder(),
-                                  focusedBorder: OutlineInputBorder(
+                                  enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.black, width: 1.0))),
                               validator: (lpassword) {
