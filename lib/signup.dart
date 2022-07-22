@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'dart:async';
 
+
 import 'package:flutter/material.dart';
 import 'package:google_place/google_place.dart';
 import 'dart:convert';
@@ -283,9 +284,9 @@ class _signupState extends State<signup> {
                                       color: Colors.white,
                                     ),
                                     border: OutlineInputBorder(),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0))),
+                                     enabledBorder:OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 1.0))),
                                 validator: (name) {
                                   if (name!.isEmpty) {
                                     return "Please Enter your Name";
@@ -309,9 +310,9 @@ class _signupState extends State<signup> {
                                       color: Colors.white,
                                     ),
                                     border: OutlineInputBorder(),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0))),
+                                     enabledBorder:OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 1.0))),
                                 validator: (mailid) {
                                   if (mailid!.isEmpty) {
                                     return "Enter email";
@@ -335,9 +336,9 @@ class _signupState extends State<signup> {
                                       color: Colors.white,
                                     ),
                                     border: OutlineInputBorder(),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0))),
+                                     enabledBorder:OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 1.0))),
                                 validator: (password) {
                                   if (password!.isEmpty) {
                                     return "Please Enter Password";
@@ -362,9 +363,9 @@ class _signupState extends State<signup> {
                                       color: Colors.white,
                                     ),
                                     border: OutlineInputBorder(),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0))),
+                                   enabledBorder:OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 1.0))),
                                 validator: (Mobile) {
                                   if (Mobile!.isEmpty) {
                                     return "Please Enter your Mobile No";
@@ -388,9 +389,9 @@ class _signupState extends State<signup> {
                                       color: Colors.white,
                                     ),
                                     border: OutlineInputBorder(),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0))),
+                                     enabledBorder:OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 1.0))),
                                 validator: (storename) {
                                   if (storename!.isEmpty) {
                                     return "Enter Store name";
@@ -414,9 +415,9 @@ class _signupState extends State<signup> {
                                       color: Colors.white,
                                     ),
                                     border: OutlineInputBorder(),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.black, width: 1.0))),
+                                     enabledBorder:OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.black, width: 1.0))),
                                 validator: (storename) {
                                   if (storename!.isEmpty) {
                                     return "Enter Store Address";
@@ -446,11 +447,27 @@ class _signupState extends State<signup> {
                                         () {
 // Here you can write your code
                                       getLatLong();
-                                      Navigator.of(context).pop();
+                                      
+                                      if(lat!=null&&long!=null)
+                                      {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog
+              (
+                title: Text(" Got Current Location "),
+                content: Text('$lat'+'\n$long'),
+                
+              );
+            },
+          );
+                                      }
+
                                     });
                                   },
                                   child: Text(
-                                    "Get live store location ",
+                                    "Use Current  store location ",
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
@@ -464,7 +481,7 @@ class _signupState extends State<signup> {
               controller: _startSearchFieldController,
               autofocus: false,
               decoration: InputDecoration(
-                  hintText: 'Search location',
+                  hintText: 'Search location.....',
                   
                   filled: true,
                   fillColor: Colors.grey[200],
@@ -506,7 +523,7 @@ class _signupState extends State<signup> {
                   child: ListTile(
                      
                     leading: Icon(Icons.pin_drop),
-                    title: Text(prediction_[index].description.toString()),
+                    title: Text(prediction_[index].description.toString(),style: TextStyle(fontStyle: FontStyle.italic),),
                     onTap: () async {
                       final placeid = prediction_[index].placeId;
                       final details =
@@ -517,11 +534,11 @@ class _signupState extends State<signup> {
                             startposition = details.result;
                             _lat=details.result!.geometry!.location!.lat;
                             _long=details.result!.geometry!.location!.lng;
-                            print(_lat);
-                            print(_long);
+                           // print(_lat);
+                           // print(_long);
                             _startSearchFieldController.text =
                                 details.result!.name!;
-                                print(details.result);
+                              //  print(details.result);
                           });
                           prediction_ = [];
                         }
@@ -531,6 +548,7 @@ class _signupState extends State<signup> {
                 );
               },
             ),
+            
                            /* ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.amber.shade300,
@@ -583,35 +601,7 @@ class _signupState extends State<signup> {
                             SizedBox(
                               height: 15,
                             ),
-                            Center(
-                                child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    child: Text(
-                                      "latitude : $lat",
-                                      textScaleFactor: 1.2,
-                                      style: const TextStyle(
-                                          fontSize: 15, color: Colors.white),
-                                    ))),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Center(
-                                child: Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    child: Text(
-                                      "longitude : $long",
-                                      textScaleFactor: 1.2,
-                                      style: const TextStyle(
-                                          fontSize: 15, color: Colors.white),
-                                    ))),
+                           
                             SizedBox(
                               height: 15,
                             ),
@@ -636,7 +626,11 @@ class _signupState extends State<signup> {
                                         ()async 
                                         {
                                            if (formKey.currentState!.validate()) {
-                                      await registerUserStore(
+                                            if(lat!=null && long!=null)
+                                            {
+                                              _display_lat_long(context, lat!, long!);
+                                              Future.delayed(Duration(seconds: 3));
+                                                await registerUserStore(
                                           email.text,
                                           password.text,
                                           name.text,
@@ -706,6 +700,154 @@ class _signupState extends State<signup> {
                                       print(long);
                                       print(store_name.text);
                                       print(phone.text);
+                                            }
+                                            else if(_lat!=null&&_long!=null)
+                                            {
+                                              _display_lat_long(context, _lat!, _long!);
+                                              await registerUserStore(
+                                          email.text,
+                                          password.text,
+                                          name.text,
+                                          int.parse(phone.text),
+                                          store_name.text,
+                                          storeaddress.text,
+                                          _lat,
+                                          _long);
+                                      //  print(mess());
+                                      if (json.decode(
+                                              responseBody)["message"] ==
+                                          "User Already exists,Please go for login") {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "User Already exists,Please go for login"),
+                                                content: Text(
+                                                    "Would You Like To go for login!!!"),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Home()));
+                                                      },
+                                                      child: Text("Yes")),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("No")),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(json.decode(
+                                                    responseBody)["message"]),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Ok"))
+                                                ],
+                                              );
+                                            });
+                                        name.clear();
+                                        email.clear();
+                                        password.clear();
+                                        storeaddress.clear();
+                                        store_name.clear();
+                                        phone.clear();
+                                      }
+                                      print(email.text);
+                                      print(password.text);
+                                      print(name.text);
+                                      print(storeaddress.text);
+                                      print(lat);
+                                      print(long);
+                                      print(store_name.text);
+                                      print(phone.text);
+
+                                            }
+                                          
+
+                                     /* await registerUserStore(
+                                          email.text,
+                                          password.text,
+                                          name.text,
+                                          int.parse(phone.text),
+                                          store_name.text,
+                                          storeaddress.text,
+                                          lat,
+                                          long);
+                                      //  print(mess());
+                                      if (json.decode(
+                                              responseBody)["message"] ==
+                                          "User Already exists,Please go for login") {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "User Already exists,Please go for login"),
+                                                content: Text(
+                                                    "Would You Like To go for login!!!"),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Home()));
+                                                      },
+                                                      child: Text("Yes")),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("No")),
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(json.decode(
+                                                    responseBody)["message"]),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text("Ok"))
+                                                ],
+                                              );
+                                            });
+                                        name.clear();
+                                        email.clear();
+                                        password.clear();
+                                        storeaddress.clear();
+                                        store_name.clear();
+                                        phone.clear();
+                                      }
+                                      print(email.text);
+                                      print(password.text);
+                                      print(name.text);
+                                      print(storeaddress.text);
+                                      print(lat);
+                                      print(long);
+                                      print(store_name.text);
+                                      print(phone.text);*/
                                     }
                                    else{ 
                                     Navigator.of(context).pop();}
@@ -733,4 +875,44 @@ class _signupState extends State<signup> {
           ),
         ));
   }
+}
+_display_lat_long(context ,double lattitude,double longitude)
+{
+ return Column
+ (
+  children: [
+     Center(
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    child: Text(
+                                      "latitude : $lattitude",
+                                      textScaleFactor: 1.2,
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.white),
+                                    ))),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Center(
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                    child: Text(
+                                      "longitude : $longitude",
+                                      textScaleFactor: 1.2,
+                                      style: const TextStyle(
+                                          fontSize: 15, color: Colors.white),
+                                    ))),
+
+
+
+  ],
+ );
 }
