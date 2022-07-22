@@ -5,6 +5,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:storeregisterapp/dashboard.dart';
 
 import 'package:storeregisterapp/product_list_by_store_id.dart';
 import 'package:storeregisterapp/service/http_service.dart';
@@ -184,9 +185,13 @@ class _MyImagePickerState extends State<MyImagePicker> {
                             return AlertDialog(
                               title: Text("Server Response"),
                               content: Text("Product Added Successfully"),
+                          
                             );
                           },
                         );
+                        Navigator.of(context).push(MaterialPageRoute(
+              builder: ((context) => dashboard())));
+                        
                       });
 
                       productdescription.clear();

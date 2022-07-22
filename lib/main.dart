@@ -404,24 +404,8 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 30,
               ),
-              Center(child: Text("Follow Us")),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          _launchurl();
-                        },
-                        icon: Icon(Icons.facebook)),
-                    IconButton(
-                        onPressed: () {
-                          _launchurl();
-                        },
-                        icon: Icon(Icons.apple)),
-                  ],
-                ),
-              ),
+              
+              
               SizedBox(
                 height: 40,
               ),
@@ -433,13 +417,3 @@ class _HomeState extends State<Home> {
   }
 }
 
-_launchurl() async {
-  const url =
-      'https://www.linkedin.com/in/abhishek-y-88615b216/?originalSubdomain=in';
-  // ignore: deprecated_member_use
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
-  }
-}

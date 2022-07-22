@@ -6,43 +6,36 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:storeregisterapp/product_list_by_store_id.dart';
 import 'package:storeregisterapp/service/http_service.dart';
-import 'package:storeregisterapp/updateproduct.dart';
 
-class editproducts extends StatefulWidget {
+class editproduct extends StatefulWidget {
   final String storeid_,
       prodid,
-      productname_,
-      productprice,
-      productdescription,
-      productquantity,
+      
       categoryid,
       productimage;
-  const editproducts(
+  const editproduct(
       {Key? key,
       required this.storeid_,
       required this.prodid,
       required this.productimage,
-      required this.productdescription,
-      required this.productname_,
-      required this.productprice,
       required this.categoryid,
-      required this.productquantity})
+     })
       : super(key: key);
 
   @override
-  State<editproducts> createState() => _editproductsState();
+  State<editproduct> createState() => _editproductState();
 }
 
-class _editproductsState extends State<editproducts> {
-  _editproductsState({Key? key});
-  TextEditingController productname = TextEditingController();
-  TextEditingController productid = TextEditingController();
-  TextEditingController productquantity = TextEditingController();
-  TextEditingController productprice = TextEditingController();
-  TextEditingController productdescription = TextEditingController();
-
+class _editproductState extends State<editproduct> {
+  _editproductState({Key? key});
+  TextEditingController productname=TextEditingController();
+   TextEditingController productid=TextEditingController();
+    TextEditingController productquantity=TextEditingController();
+ TextEditingController productprice=TextEditingController();
+  TextEditingController productdescription=TextEditingController();
+  
   final String uploadUrl = 'http://65.0.182.184/productupdate';
-
+final formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   PickedFile? _imageFile;
   String? responsed;
@@ -66,13 +59,13 @@ class _editproductsState extends State<editproducts> {
     print(productid);
     print(productprice);
     print(productquantity);
-    request.fields['product_name'] = widget.productname_;
-    request.fields['product_description'] = widget.productdescription;
-    request.fields['price'] = widget.productprice;
-    request.fields['quantity'] = widget.productquantity;
-    request.fields['product_id'] = widget.prodid;
+    request.fields['product_name'] = productname.text;
+    request.fields['product_description'] =productdescription.text;
+    request.fields['price'] =productprice.text;
+    request.fields['quantity'] = productquantity.text;
+    request.fields['product_id'] =widget.prodid ;
     request.fields['store_id'] = widget.storeid_;
-    request.fields['category_id'] = widget.categoryid;
+    request.fields['category_id'] =widget.categoryid ;
 
     var res = await request.send();
     print(request);
@@ -144,12 +137,12 @@ class _editproductsState extends State<editproducts> {
                     scale: 5,
                   ),
                 ),
-                /*    TextButton(
+                TextButton(
                     onPressed: () {
                       print("change image  pressed");
                       _pickImage();
                     },
-                    child: Text("Change Image")),*/
+                    child: Text("Change Image")),
                 Center(
                     child: FutureBuilder<void>(
                   future: retriveLostData(),
@@ -175,7 +168,6 @@ class _editproductsState extends State<editproducts> {
                     readOnly: true,
                     //controller: usermailid,
 
-                    showCursor: false,
                     style: TextStyle(color: Colors.green),
                     initialValue: widget.prodid,
                     decoration: const InputDecoration(
@@ -203,7 +195,6 @@ class _editproductsState extends State<editproducts> {
                     readOnly: true,
                     //controller: usermailid,
 
-                    showCursor: false,
                     style: TextStyle(color: Colors.green),
                     initialValue: widget.categoryid,
                     decoration: const InputDecoration(
@@ -228,13 +219,12 @@ class _editproductsState extends State<editproducts> {
                 SizedBox(
                   width: 300,
                   child: TextFormField(
-                    initialValue: widget.productname_,
+                    controller: productname,
 
                     //controller: usermailid,
 
                     style: const TextStyle(color: Colors.green),
-                    readOnly: true,
-                    showCursor: false,
+
                     decoration: const InputDecoration(
 
                         //fillColor: Colors.green,
@@ -249,6 +239,13 @@ class _editproductsState extends State<editproducts> {
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.black, width: 1.0))),
+                                    validator: (lpassword) {
+                                if (lpassword!.isEmpty) {
+                                  return "Enter Password";
+                                } else {
+                                  print("Password\t" '$lpassword');
+                                }
+                              },
                   ),
                 ),
                 const SizedBox(
@@ -257,13 +254,12 @@ class _editproductsState extends State<editproducts> {
                 SizedBox(
                   width: 300,
                   child: TextFormField(
-                    initialValue: widget.productquantity,
+                 controller: productquantity,
 
                     //controller: usermailid,
 
                     style: const TextStyle(color: Colors.green),
-                    readOnly: true,
-                    showCursor: false,
+
                     decoration: const InputDecoration(
 
                         //fillColor: Colors.green,
@@ -278,6 +274,13 @@ class _editproductsState extends State<editproducts> {
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.black, width: 1.0))),
+                                    validator: (lpassword) {
+                                if (lpassword!.isEmpty) {
+                                  return "Enter Password";
+                                } else {
+                                  print("Password\t" '$lpassword');
+                                }
+                              },
                   ),
                 ),
                 const SizedBox(
@@ -286,13 +289,12 @@ class _editproductsState extends State<editproducts> {
                 SizedBox(
                   width: 300,
                   child: TextFormField(
-                    initialValue: widget.productprice,
+                    controller: productprice,
 
                     //controller: usermailid,
 
                     style: const TextStyle(color: Colors.green),
-                    readOnly: true,
-                    showCursor: false,
+
                     decoration: const InputDecoration(
 
                         //fillColor: Colors.green,
@@ -307,6 +309,13 @@ class _editproductsState extends State<editproducts> {
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.black, width: 1.0))),
+                                    validator: (lpassword) {
+                                if (lpassword!.isEmpty) {
+                                  return "Enter Password";
+                                } else {
+                                  print("Password\t" '$lpassword');
+                                }
+                              },
                   ),
                 ),
                 Padding(
@@ -320,10 +329,9 @@ class _editproductsState extends State<editproducts> {
                             height: 20,
                           ),
                           TextFormField(
-                              initialValue: widget.productdescription,
+                              controller: productdescription,
                               maxLines: 8, //or null
-                              readOnly: true,
-                              showCursor: false,
+
                               decoration: const InputDecoration.collapsed(
                                   hintText: "Add Product Description here !",
                                   hintStyle: TextStyle(
@@ -369,7 +377,9 @@ class _editproductsState extends State<editproducts> {
                                             fontSize: 17, color: Colors.green),
                                       )),
                                   TextButton(
-                                      onPressed: () {
+                                      onPressed: () async {
+                                      //  print(_imageFile!.path);
+                                     
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
@@ -383,36 +393,54 @@ class _editproductsState extends State<editproducts> {
                                             ));
                                           },
                                         );
-                                        Future.delayed(Duration(seconds: 2),
-                                            () {
-                                          Navigator.pop(context);
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      editproduct(
-                                                          storeid_:
-                                                              widget.storeid_,
-                                                          prodid: widget.prodid,
-                                                          productimage: widget
-                                                              .productimage,
-                                                          categoryid: widget
-                                                              .categoryid))));
+                                        if (_imageFile != null) {
+                                          
+                                          
+                                            Navigator.pop(context);
+                                            Navigator.of(context).pop();
+                                         
+                                          var res = await uploadImage(
+                                              _imageFile!.path, uploadUrl);
+                                          print(res);
+                                          if(res=="OK"){
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Server Response"),
+                                                content: Text("Product Details Updated Successfully"),
+                                              );
+                                            },
+                                          );
+                                          Navigator.of(context).push(MaterialPageRoute(
+              builder: ((context) => CardPage(storeid: widget.storeid_))));
+                                          }
+                                          else{
+                                             showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Server Response"),
+                                                content: Text("Error in Updating!!!"),
+                                              );
+                                            },
+                                          );
 
-                                          // Do something
-                                        });
-                                      },
-                                      child: const Text(
-                                        "Yes",
-                                        style: TextStyle(
-                                            fontSize: 17, color: Colors.green),
-                                      )),
+                                          }
+                                        }
+                                      }
+                            ,
+                                      child: const Text("Yes",
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              color: Colors.green))),
                                 ],
                               );
                             },
                           );
                         },
                         icon: Icon(Icons.edit),
-                        label: Text("Edit  Details ")),
+                        label: Text("edit and save ")),
                     Spacer(),
                     ElevatedButton.icon(
                         onPressed: () {

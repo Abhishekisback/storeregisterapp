@@ -534,8 +534,8 @@ class _signupState extends State<signup> {
                             startposition = details.result;
                             _lat=details.result!.geometry!.location!.lat;
                             _long=details.result!.geometry!.location!.lng;
-                           // print(_lat);
-                           // print(_long);
+                            print(_lat);
+                           print(_long);
                             _startSearchFieldController.text =
                                 details.result!.name!;
                               //  print(details.result);
@@ -679,7 +679,8 @@ class _signupState extends State<signup> {
                                                 actions: [
                                                   TextButton(
                                                       onPressed: () {
-                                                        Navigator.pop(context);
+                                                      Navigator.of(context).push(MaterialPageRoute(
+              builder: ((context) => Home())));
                                                       },
                                                       child: Text("Ok"))
                                                 ],
